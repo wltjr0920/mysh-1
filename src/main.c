@@ -18,6 +18,7 @@ int main(){
 	
     while (1) {
 	fgets(buf, 8096, stdin);
+
 	signal(SIGINT, (void*) catch_sigint);
 	signal(SIGTSTP, (void*) catch_sigtstp);
 
