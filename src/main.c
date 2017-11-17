@@ -4,17 +4,22 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <signal.h>
 
 #include "commands.h"
 #include "built_in.h"
 #include "utils.h"
+#include "signal_handlers.h"
 
-int main()
-{
+
+
+int main(){
     char buf[8096];
-
+	
     while (1) {
 	fgets(buf, 8096, stdin);
+	signal(SIGINT, (void*) catch_sigint);
+	signal(SIGTSTP, (void*) catch_sigtstp);
 
 	struct single_command commands[512];
 	int n_commands = 0;
@@ -28,6 +33,7 @@ int main()
 	if (ret == 1) {
 	    break;
 	}
+	memset(buf,0,8096);
     }
 
     return 0;
